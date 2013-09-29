@@ -10,6 +10,27 @@
 
 module.exports = function(grunt) {
 
+  /*
+  Define a relaxed toposort which does not check for (or worry about) cyclic dependencies.
+  */
+  function toposort(dependencies) {
+    var sorted=[], visited={};
+
+    function visit(key) {
+      if(!visited[key]) {
+        visited[key] = true;
+        if(!dependencies[key]) {
+          throw new Error('A dependency is given which is not defined' + key);
+        }
+        dependencies[key].dependencies.forEach(visit);
+        sorted.push(key);
+      }
+    }
+
+    for(var key in dependencies) { visit(key); }
+    return sorted;
+  }
+
   grunt.registerMultiTask('combine_harvester', 'Scans through source code for "@requires" statements and produces a combined file which satisfies the dependencies', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
@@ -23,24 +44,6 @@ module.exports = function(grunt) {
         return matches.map(function(importLine) { 
           return root + importLine.trim().split(' ').pop();
         });
-      },
-      toposort: function(dependencies) {
-        var sorted=[];
-        var visited={};
-
-        function visit(key) {
-          if(!visited[key]) {
-            visited[key] = true;
-            if(!dependencies[key]) {
-              throw new Error('A dependency is given which is not defined' + key);
-            }
-            dependencies[key].dependencies.forEach(visit);
-            sorted.push(key);
-          }
-        }
-
-        for(var key in dependencies) { visit(key); }
-        return sorted;
       },
       root: ''
     });
@@ -75,7 +78,7 @@ module.exports = function(grunt) {
       }).forEach(findDependencies);
 
       // Put the files in the correct order
-      var orderedDependencies = options.toposort(dependencyTree);
+      var orderedDependencies = toposort(dependencyTree);
 
       // Concat specified files.
       var src = orderedDependencies.map(function(file) {

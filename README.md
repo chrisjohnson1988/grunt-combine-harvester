@@ -37,46 +37,40 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.regex
+Type: `Regex`
+Default value: `/@requires?:?\s+(\S*)\s*/g`
+
+The regex to be used by the default harvester function to find dependencies in scanned files
+
+#### options.root
 Type: `String`
-Default value: `',  '`
+Default value: ``
 
-A string value that is used to do something with whatever.
+A string value that is used to prefix the values of @requires statements, so that the resultant string can be used to locate the dependency relative to the cwd.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+This must end in '/' if you want to use a directory as a root
 
-A string value that is used to do something else with whatever else.
+#### options.harvester
+Type: `function`
+Default value: `default_harvester`
+
+The function which performs the harvesting of source code, to return a list of fully qualified dependencies to harvest. 
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  combine_harvester: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, a root is specified. So if the `dependency1` file has the content `@requires dependency3`, the generated result would be the concatenation: 
+`dependency3 + dependency1 + dependency2`
 
 ```js
 grunt.initConfig({
   combine_harvester: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      root: 'src/'
     },
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/default_options': ['src/dependency1', 'src/dependency2'],
     },
   },
 })
