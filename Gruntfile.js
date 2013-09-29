@@ -35,7 +35,16 @@ module.exports = function(grunt) {
           root: 'test/fixtures/'
         },
         files: {
-          'tmp/default_options': ['test/fixtures/123.js'],
+          'tmp/default_options': ['test/fixtures/req1.js', 'test/fixtures/req2.js'],
+        },
+      },
+      custom_regex: {
+        options: {
+          root: 'test/fixtures/',
+          regex: /@dependency?:?\s+(\S*)\s*/g,
+        },
+        files: {
+          'tmp/custom_regex': ['test/fixtures/dep1.js', 'test/fixtures/dep2.js'],
         },
       }
     },

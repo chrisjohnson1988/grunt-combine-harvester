@@ -1,1 +1,11 @@
-Testing, 1 2 3.
+I am req4
+/*
+@requires req4.js
+*/
+I am req2
+I am req3
+/*
+@requires req2.js
+@requires req3.js
+*/
+I am req1
