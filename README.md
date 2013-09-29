@@ -1,5 +1,7 @@
 # grunt-combine-harvester
 
+[![Build Status](https://travis-ci.org/chrisjohnson1988/grunt-combine-harvester.png?branch=master)](https://travis-ci.org/chrisjohnson1988/grunt-combine-harvester)
+
 > Scans through source code for "@requires" statements and produces a combined file which satisfies the dependencies
 
 ## Getting Started
