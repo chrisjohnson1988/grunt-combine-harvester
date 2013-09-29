@@ -4,6 +4,8 @@
 
 > Scans through source code for "@requires" statements and produces a combined file which satisfies the dependencies
 
+You may find this library useful for building custom versions of projects like [OpenLayers](https://github.com/openlayers/openlayers) for use in your own grunt project.
+
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
 
